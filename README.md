@@ -6,3 +6,4 @@ Technologies and solutions I want to cover in this project:
 - InfluxDB
 - MQTT
 - Thermal Comfort in Smart Builidng
+- HVAC control and handling
