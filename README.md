@@ -1,9 +1,8 @@
-# iot-observability
-Repository made for projects regarding monitoring and observability concepts in IoT. 
+# iot-thermal-telemetry-stack
+This project was designed to present small iot telemetry stack focused on thermal comfort. 
 ## Key concepts
-Technologies and solutions I want to cover in this project:
-- Grafana
-- InfluxDB
-- MQTT
-- Thermal Comfort in Smart Builidng
-- HVAC control and handling
+* **Data Aquisition** - Raspberry Pi Pico (RPi) is used to collect environmental data with various sensors.
+* **Thermal Comfort Analytics** - Unlike standard thermometers, this stack calculates **PMV (Predicted Mean Vote)** and **PPD (Predicted Percentage Dissatisfied)** in real-time to assess true human comfort.
+* **Active Ventilation Simulation (PWM Control):** Features a custom-built ventilation engine where fan intensity is dynamically adjusted via **PWM (Pulse Width Modulation)** based on real-time temperature gradients, simulating an automated HVAC response.
+* **Cloud-Native Observability** - Uses a modern DevOps stack (k3s, InfluxDB 2.x, Grafana) to store and visualize time-series data with high availability in mind.
+  
