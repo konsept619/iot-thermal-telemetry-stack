@@ -1,6 +1,7 @@
 import machine
 import utime
 import dht
+import math
 from machine import I2C, Pin, ADC, PWM
 from pico_i2c_lcd import I2cLcd
 
@@ -20,6 +21,22 @@ fan.freq(1000)
 TEMP_MIN = 24.0
 TEMP_MAX = 28.0
 
+R_FIXED = 10000
+R10 = 25000
+GAMMA = 0.6
+
+def calculate_lux(raw_adc):
+    if raw_adc <= 500: # Protection against divisioning by 0
+        return 0.0
+        
+    r_ldr = ((65535 / raw_adc) - 1) * R_FIXED
+    
+    try:
+        lux = math.pow((R10 * math.pow(10, GAMMA)) / r_ldr, 1/GAMMA)
+        return round(lux, 1)
+    except (ZeroDivisionError, ValueError):
+        return 0.0
+
 print("Measuring...")
 lcd.putstr("Initialization...")
 utime.sleep(2)
@@ -33,6 +50,9 @@ try:
             hum = sensor.humidity
             
             light_raw = light_sensor.read_u16()
+            print(f"Raw: {light_raw}")
+            lux_value = round(calculate_lux(light_raw))
+            print(f"Lux: {lux_value}")
             light_percent = round((light_raw / 65535) * 100, 1)
             
             # PWM thresholds
@@ -47,14 +67,14 @@ try:
             power_fan = round((duty / 65535) * 100, 1)
 
             # Providing data for connector
-            print(f"{temp},{hum},{light_percent},{power_fan}")
+            print(f"{temp},{hum},{lux_value},{power_fan}")
 
             # Displaying data on LCD
             lcd.clear()
             lcd.move_to(0, 0)
             lcd.putstr(f"T:{temp}C H:{hum}%")
             lcd.move_to(0, 1)
-            lcd.putstr(f"Went:{power_fan}%")
+            lcd.putstr(f"L:{lux_value} lx F:{power_fan}")
 
         except OSError as e:
             print("Sensor reading error!")
@@ -62,7 +82,6 @@ try:
             lcd.move_to(0, 0)
             lcd.putstr("Sensor error")
 
-        
         utime.sleep(5)
 
 except KeyboardInterrupt:
