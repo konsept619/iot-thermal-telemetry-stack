@@ -1,5 +1,5 @@
 # iot-thermal-telemetry-stack
-This project was designed to present small iot telemetry stack focused on thermal comfort. 
+This project was designed to present a small IoT telemetry stack focused on thermal comfort. 
 ## Key concepts
 * **Data Aquisition** - Raspberry Pi Pico (RPi) is used to collect environmental data with various sensors.
 * **Thermal Comfort Analytics** - Unlike standard thermometers, this stack calculates **PMV (Predicted Mean Vote)** and **PPD (Predicted Percentage Dissatisfied)** in real-time to assess true human comfort.
@@ -8,3 +8,5 @@ This project was designed to present small iot telemetry stack focused on therma
   
 ## Architecture 
 <img src="IoT-architecture-diagram.png" alt="Architecture" width="600">
+
+
